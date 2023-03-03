@@ -127,5 +127,20 @@ def profile():
 
 
 
+@app.route("/stock", methods=["POST", "GET"])
+def stock():
+    return render_template("stock.html")
+
+
+@app.route("/sales", methods=["POST", "GET"])
+def sales():
+    return render_template("sales.html")
+
+
+@app.route("/dues", methods=["POST", "GET"])
+def dues():
+    return render_template("dues.html")
+
+
 if __name__ == "__main__":
   app.run(debug=True, host='0.0.0.0', port=5000)
