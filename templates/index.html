@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Register System{% endblock %}
+
+{% block content %}
+
+{% if message  %}
+    <div class="alert alert-secondary" role="alert">
+        <p>{{ message }}</p>
+    </div>
+{% endif %}
+
+<form action="" method="post">
+  <div class="form-group">
+        <label for="Fullname">Name of Owner</label>
+        <input name="fullname" class="form-control" id="inputFullName" aria-describedby="emailHelp" placeholder="Enter full name">
+        <small id="fullName" class="form-text text-muted">Please enter your full name(First name and Last name)</small>
+  </div>
+
+  <div class="form-group">
+        <label for="InputEmail">Email address</label>
+        <input name="email" class="form-control" id="InputEmail"  placeholder="Enter email">
+        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+  </div>
+
+  <!-- name of shop -->
+  <div class="form-group">
+        <label for="InputShopName">Enter Shop Name</label>
+        <input name="ShopName" class="form-control" id="InputShopName"  placeholder="Enter Name of Shop">
+  </div>
+
+  <!-- type of shop -->
+  <div class="form-group">
+        <label for="InputType">Type of Shop</label>
+        <input name="typeOfShop" class="form-control" id="InputType"  placeholder="Enter Type of Shop">
+  </div>
+
+  <!-- location -->
+  <div class="form-group">
+        <label for="InputLoc">Enter Location</label>
+        <input name="location" class="form-control" id="InputLoc"  placeholder="Enter Location of Shop">
+  </div>
+
+  <!-- Registration number -->
+  <div class="form-group">
+        <label for="InputReg">Enter Registration Number of Shop</label>
+        <input name="reg" class="form-control" id="InputReg"  placeholder="Enter Registration Number of Shop">
+  </div>
+
+  <!-- username -->
+  <div class="form-group">
+        <label for="InputUser">Type Your Username</label>
+        <input name="username" class="form-control" id="InputUser"  placeholder="Type Your Username">
+  </div>
+
+  <div class="form-group">
+    <label for="InputPassword">Password</label>
+    <input type="password" name="password1" class="form-control" id="InputPassword" placeholder="Password">
+  </div>
+
+    <div class="form-group">
+    <label for="InputPassword2">Repeat Password</label>
+    <input type="password" name="password2" class="form-control" id="InputPassword2" placeholder="Repeat Password">
+
+    </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
+{% endblock %}
+
