@@ -120,12 +120,9 @@ def home():
 def dash():
     return render_template("dash.html")
 
-
 @app.route("/profile", methods=["POST", "GET"])
 def profile():
     return render_template("users-profile.html")
-
-
 
 @app.route("/stock", methods=["POST", "GET"])
 def stock():
