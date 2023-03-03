@@ -5,7 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Frosthack</title>
-    <link rel="stylesheet" href="main.css">
+    <link href="{{ url_for('static', filename='main.css')}}" rel="stylesheet">
+
+    <!-- <link rel="stylesheet" href="main.css"> -->
 </head>
 <body>
        <div class="container" onclick="onclick">
@@ -14,8 +16,8 @@
     <div class="center">
       <h2 class="head">App Name</h2>
       <a href=''>
-        <button class="button">
-           Shopkeeper
+        <button class="button" >
+          <a href="shopkeeper_signup">Shopkeeper</a> 
         </button>
         
     </a>

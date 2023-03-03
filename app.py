@@ -15,9 +15,14 @@ def MongoDB():
 records = MongoDB()
 
 
-#assign URLs to have a particular route 
-@app.route("/", methods=['post', 'get'])
 
+@app.route("/", methods=["POST", "GET"])
+def main():
+    return render_template("main.html")
+
+
+#assign URLs to have a particular route 
+@app.route("/shopkeeper_signup", methods=['post', 'get'])
 def index():
     message = ''
     #if method post in index
@@ -60,7 +65,7 @@ def index():
             return render_template('logged_in.html', email=new_email)
     return render_template('index.html')
 
-@app.route("/login", methods=["POST", "GET"])
+@app.route("/shopkeeper_login", methods=["POST", "GET"])
 def login():
     message = 'Please login to your account'
     if "email" in session:
@@ -95,7 +100,7 @@ def logged_in():
         email = session["email"]
         return render_template('logged_in.html', email=email)
     else:
-        return redirect(url_for("login"))
+        return redirect(url_for("shopkeeper_login"))
 
 @app.route("/logout", methods=["POST", "GET"])
 def logout():
@@ -104,6 +109,17 @@ def logout():
         return render_template("signout.html")
     else:
         return render_template('index.html')
+
+
+@app.route("/dashboard", methods=["POST", "GET"])
+def dash():
+    return render_template("dash.html")
+
+
+@app.route("/profile", methods=["POST", "GET"])
+def profile():
+    return render_template("users-profile.html")
+
 
 
 if __name__ == "__main__":
