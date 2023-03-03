@@ -11,7 +11,7 @@ db = client.flask_db
 @ app.route('/')
 def home():
     title = 'Home'
-    return render_template('dash.html', title=title)
+    return render_template('index.html', title=title)
 
 if __name__ == '__main__':
     app.run(debug = True)
