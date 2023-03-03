@@ -15,6 +15,10 @@ return (
 		<Link to="/">Home</Link>
 		</li>
 		<li>
+		{/* Endpoint to route to Home component */}
+		<Link to="/profile">Profile</Link>
+		</li>
+		<li>
 		{/* Endpoint to route to About component */}
 		<Link to="/dashboard">About</Link>
 		</li>
