@@ -110,6 +110,11 @@ def logout():
     else:
         return render_template('index.html')
 
+# render home page
+@ app.route('/')
+def home():
+    title = 'Home'
+    return render_template('dash.html', title=title)
 
 @app.route("/dashboard", methods=["POST", "GET"])
 def dash():
