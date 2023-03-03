@@ -23,29 +23,18 @@ function App() {
     //   </header>
     // </div>
     
-    <>
-    {/* This is the alias of BrowserRouter i.e. Router */}
-    <Router>
-      <Routes>
-      {/* This route is for home component 
-          with exact path "/", in component props 
-          we passes the imported component*/}
-          <Route exact path="/" element={<Home/>} />
-            
-            {/* This route is for about component 
-            with exact path "/aboxut", in component 
-            props we passes the imported component*/}
-            <Route path="/dashboard" element={<About/>} />
-          
-            {/* If any route mismatches the upper 
-          route endpoints then, redirect triggers 
-          and redirects app to home component with to="/" */}
-          <Route to="/" />
-      </Routes>
-    </Router>
-  </>
+      <div className="App">
+          <header className="App-header">
+              <h1>React and flask</h1>
+              {/* Calling a data from setdata for showing */}
+              <p>"hi"</p>
+
+          </header>
+      </div>
 
   );
 }
 
 export default App;
+
+
