@@ -234,10 +234,7 @@ def dues():
     
     return render_template("dues.html")
 
-@app.route("/cust_profile", methods=["POST", "GET"])
-def cust_profile():
-    
-    return render_template("cust_profile.html")
+
 
 
 if __name__ == "__main__":
