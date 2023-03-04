@@ -249,10 +249,17 @@ def sales():
     return render_template("sales.html")
 
 
-@app.route("/dues", methods=["POST", "GET"])
-def dues():
+@app.route("/collect", methods=["POST", "GET"])
+def collect():
     
-    return render_template("dues.html")
+    return render_template("collect.html")
+
+
+
+@app.route("/pay", methods=["POST", "GET"])
+def pay():
+    
+    return render_template("pay.html")
 
 @app.route("/cust_profile", methods=["POST", "GET"])
 def cust_profile():
