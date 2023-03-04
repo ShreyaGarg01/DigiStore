@@ -22,6 +22,7 @@ records1 = db3.register
 
 db2 = client.get_database('Finance')
 collectPayment = db2.CollectPayment
+Pay = db2.pay
 
 def foo():
     bar= db1.get_collection('register')
@@ -39,7 +40,9 @@ def index():
     message = ''
     #if method post in index
     if "email" in session:
-        return redirect(url_for("logged_in"))
+        news = get_news()
+        return render_template('dash.html',news=news)
+    
     if request.method == "POST":
         user = request.form.get("fullname")
         email = request.form.get("email")
@@ -75,14 +78,16 @@ def index():
             user_data = records.find_one({"email": email})
             new_email = user_data['email']
             #if registered redirect to logged in as the registered user
-            return render_template('logged_in.html', email=new_email)
+            news = get_news()
+            return render_template('dash.html',news=news)
     return render_template('index.html')
 
 @app.route("/shopkeeper_login", methods=["POST", "GET"])
 def login():
     message = 'Please login to your account'
     if "email" in session:
-        return redirect(url_for("logged_in"))
+        news = get_news()
+        return render_template('dash.html',news=news)
 
     if request.method == "POST":
         email = request.form.get("email")
@@ -96,10 +101,12 @@ def login():
             #encode the password and check if it matches
             if bcrypt.checkpw(password.encode('utf-8'), passwordcheck):
                 session["email"] = email_val
-                return redirect(url_for('logged_in'))
+                news = get_news()
+                return render_template('dash.html',news=news)
             else:
                 if "email" in session:
-                    return redirect(url_for("logged_in"))
+                    news = get_news()
+                    return render_template('dash.html',news=news)
                 message = 'Wrong password'
                 return render_template('login_shopkeeper.html', message=message)
         else:
@@ -114,7 +121,8 @@ def index1():
     message = ''
     #if method post in index
     if "email" in session:
-        return redirect(url_for("logged_in"))
+        news = get_news()
+        return render_template('dash.html',news=news)
     if request.method == "POST":
         user = request.form.get("fullname")
         email = request.form.get("email")
@@ -125,8 +133,8 @@ def index1():
         password1 = request.form.get("password1")
         password2 = request.form.get("password2")
         #if found in database showcase that it's found 
-        user_found = records.find_one({"name": user})
-        email_found = records.find_one({"email": email})
+        user_found = records1.find_one({"name": user})
+        email_found = records1.find_one({"email": email})
         if user_found:
             message = 'There already is a user by that name'
             return render_template('customer.html', message=message)
@@ -140,39 +148,44 @@ def index1():
             #hash the password and encode it
             hashed = bcrypt.hashpw(password2.encode('utf-8'), bcrypt.gensalt())
             #assing them in a dictionary in key value pairs
-            user_input = {'name': user, 'email': email, 'password': hashed, 'type': type,  'username': username, }
+            user_input = {'name': user, 'email': email, 'password': hashed,  'username': username, }
             #insert it in the record collection
-            records.insert_one(user_input)
+            records1.insert_one(user_input)
             
             #find the new created account and its email
-            user_data = records.find_one({"email": email})
+            user_data = records1.find_one({"email": email})
             new_email = user_data['email']
             #if registered redirect to logged in as the registered user
-            return render_template('logged_in.html', email=new_email)
+            return render_template('cust_profile.html')
     return render_template('customer.html')
 
 @app.route("/customer_login", methods=["POST", "GET"])
 def login1():
     message = 'Please login to your account'
     if "email" in session:
-        return redirect(url_for("logged_in"))
+        news = get_news()
+        return render_template('dash.html',news=news)
 
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
 
         #check if email exists in database
-        email_found = records.find_one({"email": email})
+        email_found = records1.find_one({"email": email})
         if email_found:
             email_val = email_found['email']
             passwordcheck = email_found['password']
             #encode the password and check if it matches
             if bcrypt.checkpw(password.encode('utf-8'), passwordcheck):
                 session["email"] = email_val
-                return redirect(url_for('logged_in'))
+                news = get_news()
+                return render_template('dash.html',news=news)
+
             else:
                 if "email" in session:
-                    return redirect(url_for("logged_in"))
+                    news = get_news()
+                    return render_template('dash.html',news=news)
+
                 message = 'Wrong password'
                 return render_template('login_customer.html', message=message)
         else:
@@ -184,7 +197,7 @@ def login1():
 def logout():
     if "email" in session:
         session.pop("email", None)
-        return render_template("signout.html")
+        return render_template("main.html")
     else:
         return render_template('main.html')
 
@@ -272,10 +285,34 @@ def collect():
     msg=[]
     
     for document in collectPayment.find():
-        print(document)
         msg.append(document)
 
     return render_template("collect.html",msg=msg)
+
+@app.route("/pay", methods=["POST", "GET"])
+def pay():
+    if request.method=="POST":
+        amount = request.form.get("amount")
+        name = request.form.get("name")
+        contact = request.form.get("contact")
+        user_input = {'amount': amount, 'name': name, 'contact': contact}
+
+        if request.form.get('act') == 'add':                        
+            Pay.insert_one(user_input)  
+
+        if request.form.get('act') == 'delete':                        
+            Pay.delete_one(user_input) 
+
+        if request.form.get('act') == 'update':     
+            Pay.update_one({ "name" : name },
+            {"$set": { "amount" : amount, "contact" : contact } })         
+
+    msg=[]
+    
+    for document in Pay.find():
+        msg.append(document)
+
+    return render_template("pay.html",msg=msg)
 
 # sales_prediction = define_model()
 
@@ -289,6 +326,13 @@ def sales():
         ans = input_processing([item, date])
         print(ans)
         return render_template("sales.html", prediction = ans)
+    return render_template("sales.html")
+
+@app.route("/cust_profile", methods=["POST", "GET"])
+def cust_profile():
+    return render_template("cust_profile.html")
+
+
 
 if __name__ == "__main__":
   app.run(debug=True, host='0.0.0.0', port=5000)
