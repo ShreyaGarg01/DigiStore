@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, url_for, redirect, session
 from pymongo import MongoClient
 import bcrypt
+from news_api import get_news
 #set app as a Flask instance 
 app = Flask(__name__)
 #encryption relies on secret keys so they could be run
@@ -191,7 +192,8 @@ def home():
 
 @app.route("/dashboard", methods=["POST", "GET"])
 def dash():
-    return render_template("dash.html")
+    news = get_news()
+    return render_template("dash.html", news=news)
 
 @app.route("/profile", methods=["POST", "GET"])
 def profile():
@@ -209,6 +211,7 @@ def sales():
 
 @app.route("/dues", methods=["POST", "GET"])
 def dues():
+    
     return render_template("dues.html")
 
 
