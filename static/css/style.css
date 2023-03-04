@@ -275,6 +275,14 @@ h6 {
 .card-img-overlay {
   background-color: rgba(255, 255, 255, 0.6);
 }
+.pid{
+  margin-left: 12px;
+}
+
+.submt{
+  margin-top: 40px;
+  margin-left: 500px;
+}
 
 /* Alerts */
 .alert-heading {
