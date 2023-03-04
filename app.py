@@ -17,6 +17,13 @@ records = db.register
 db1 = client.get_database('AddedItems')
 addItems = db1.register
 
+db3 = client.get_database('customers')
+records1 = db3.register
+
+db2 = client.get_database('Finance')
+collectPayment = db2.CollectPayment
+Pay = db2.pay
+
 def foo():
     bar= db1.get_collection('register')
     return bar
@@ -33,7 +40,9 @@ def index():
     message = ''
     #if method post in index
     if "email" in session:
-        return redirect(url_for("logged_in"))
+        news = get_news()
+        return render_template('dash.html',news=news)
+    
     if request.method == "POST":
         user = request.form.get("fullname")
         email = request.form.get("email")
@@ -69,14 +78,16 @@ def index():
             user_data = records.find_one({"email": email})
             new_email = user_data['email']
             #if registered redirect to logged in as the registered user
-            return render_template('logged_in.html', email=new_email)
+            news = get_news()
+            return render_template('dash.html',news=news)
     return render_template('index.html')
 
 @app.route("/shopkeeper_login", methods=["POST", "GET"])
 def login():
     message = 'Please login to your account'
     if "email" in session:
-        return redirect(url_for("logged_in"))
+        news = get_news()
+        return render_template('dash.html',news=news)
 
     if request.method == "POST":
         email = request.form.get("email")
@@ -90,10 +101,12 @@ def login():
             #encode the password and check if it matches
             if bcrypt.checkpw(password.encode('utf-8'), passwordcheck):
                 session["email"] = email_val
-                return redirect(url_for('logged_in'))
+                news = get_news()
+                return render_template('dash.html',news=news)
             else:
                 if "email" in session:
-                    return redirect(url_for("logged_in"))
+                    news = get_news()
+                    return render_template('dash.html',news=news)
                 message = 'Wrong password'
                 return render_template('login_shopkeeper.html', message=message)
         else:
@@ -108,7 +121,8 @@ def index1():
     message = ''
     #if method post in index
     if "email" in session:
-        return redirect(url_for("logged_in"))
+        news = get_news()
+        return render_template('dash.html',news=news)
     if request.method == "POST":
         user = request.form.get("fullname")
         email = request.form.get("email")
@@ -119,8 +133,8 @@ def index1():
         password1 = request.form.get("password1")
         password2 = request.form.get("password2")
         #if found in database showcase that it's found 
-        user_found = records.find_one({"name": user})
-        email_found = records.find_one({"email": email})
+        user_found = records1.find_one({"name": user})
+        email_found = records1.find_one({"email": email})
         if user_found:
             message = 'There already is a user by that name'
             return render_template('customer.html', message=message)
@@ -134,39 +148,44 @@ def index1():
             #hash the password and encode it
             hashed = bcrypt.hashpw(password2.encode('utf-8'), bcrypt.gensalt())
             #assing them in a dictionary in key value pairs
-            user_input = {'name': user, 'email': email, 'password': hashed, 'type': type,  'username': username, }
+            user_input = {'name': user, 'email': email, 'password': hashed,  'username': username, }
             #insert it in the record collection
-            records.insert_one(user_input)
+            records1.insert_one(user_input)
             
             #find the new created account and its email
-            user_data = records.find_one({"email": email})
+            user_data = records1.find_one({"email": email})
             new_email = user_data['email']
             #if registered redirect to logged in as the registered user
-            return render_template('logged_in.html', email=new_email)
+            return render_template('cust_profile.html')
     return render_template('customer.html')
 
 @app.route("/customer_login", methods=["POST", "GET"])
 def login1():
     message = 'Please login to your account'
     if "email" in session:
-        return redirect(url_for("logged_in"))
+        news = get_news()
+        return render_template('dash.html',news=news)
 
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
 
         #check if email exists in database
-        email_found = records.find_one({"email": email})
+        email_found = records1.find_one({"email": email})
         if email_found:
             email_val = email_found['email']
             passwordcheck = email_found['password']
             #encode the password and check if it matches
             if bcrypt.checkpw(password.encode('utf-8'), passwordcheck):
                 session["email"] = email_val
-                return redirect(url_for('logged_in'))
+                news = get_news()
+                return render_template('dash.html',news=news)
+
             else:
                 if "email" in session:
-                    return redirect(url_for("logged_in"))
+                    news = get_news()
+                    return render_template('dash.html',news=news)
+
                 message = 'Wrong password'
                 return render_template('login_customer.html', message=message)
         else:
@@ -174,19 +193,11 @@ def login1():
             return render_template('login_customer.html', message=message)
     return render_template('login_customer.html', message=message)
 
-@app.route('/logged_in')
-def logged_in():
-    if "email" in session:
-        email = session["email"]
-        return render_template('logged_in.html', email=email)
-    else:
-        return redirect(url_for("shopkeeper_login"))
-
 @app.route("/logout", methods=["POST", "GET"])
 def logout():
     if "email" in session:
         session.pop("email", None)
-        return render_template("signout.html")
+        return render_template("main.html")
     else:
         return render_template('main.html')
 
@@ -203,7 +214,16 @@ def dash():
 
 @app.route("/profile", methods=["POST", "GET"])
 def profile():
-    return render_template("users-profile.html")
+    if"email" in session:
+        msg=[]
+        em=""
+        for document in records.find():
+            em=document['email']
+
+        for document in records.find():
+            if(document['email']==em): msg.append(document)
+
+    return render_template("users-profile.html", msg=msg)
 
 @app.route("/cart", methods=["POST", "GET"])
 def cart():
@@ -215,8 +235,7 @@ def order():
     return render_template("order.html")
 
 @app.route("/stock", methods=["POST", "GET"])
-def stock(foobar):
-
+def stock():
     if request.method=="POST":
         itemId = request.form.get("itemId")
         name = request.form.get("name")
@@ -227,11 +246,73 @@ def stock(foobar):
 
         user_input = {'itemId': itemId, 'name': name, 'quantity': quantity, 'brand':brand, 'cp':cp, 'sp':sp}
 
-        addItems.insert_one(user_input)
+        if request.form.get('act') == 'add':                        
+            addItems.insert_one(user_input)  
 
+        if request.form.get('act') == 'delete':                        
+            addItems.delete_one(user_input) 
+
+        if request.form.get('act') == 'update':     
+            addItems.update_one({ 'itemId': itemId },
+            {"$set": { 'name': name, 'quantity': quantity, 'brand':brand, 'cp':cp, 'sp':sp} })         
+
+    msg=[]
     
+    for document in addItems.find():
+        msg.append(document)
+
+    return render_template("stock.html",msg=msg)
+
+@app.route("/collect", methods=["POST", "GET"])
+
+def collect():
+    if request.method=="POST":
+        amount = request.form.get("amount")
+        name = request.form.get("name")
+        contact = request.form.get("contact")
+        user_input = {'amount': amount, 'name': name, 'contact': contact}
+
+        if request.form.get('act') == 'add':                        
+            collectPayment.insert_one(user_input)  
+
+        if request.form.get('act') == 'delete':                        
+            collectPayment.delete_one(user_input) 
+
+        if request.form.get('act') == 'update':     
+            collectPayment.update_one({ "name" : name },
+            {"$set": { "amount" : amount, "contact" : contact } })         
+
+    msg=[]
     
-    return render_template("stock.html", foobar=foo())
+    for document in collectPayment.find():
+        msg.append(document)
+
+    return render_template("collect.html",msg=msg)
+
+@app.route("/pay", methods=["POST", "GET"])
+def pay():
+    if request.method=="POST":
+        amount = request.form.get("amount")
+        name = request.form.get("name")
+        contact = request.form.get("contact")
+        user_input = {'amount': amount, 'name': name, 'contact': contact}
+
+        if request.form.get('act') == 'add':                        
+            Pay.insert_one(user_input)  
+
+        if request.form.get('act') == 'delete':                        
+            Pay.delete_one(user_input) 
+
+        if request.form.get('act') == 'update':     
+            Pay.update_one({ "name" : name },
+            {"$set": { "amount" : amount, "contact" : contact } })         
+
+    msg=[]
+    
+    for document in Pay.find():
+        msg.append(document)
+
+    return render_template("pay.html",msg=msg)
 
 # sales_prediction = define_model()
 
@@ -245,26 +326,12 @@ def sales():
         ans = input_processing([item, date])
         print(ans)
         return render_template("sales.html", prediction = ans)
-
     return render_template("sales.html")
-
-
-@app.route("/collect", methods=["POST", "GET"])
-def collect():
-    
-    return render_template("collect.html")
-
-
-
-@app.route("/pay", methods=["POST", "GET"])
-def pay():
-    
-    return render_template("pay.html")
 
 @app.route("/cust_profile", methods=["POST", "GET"])
 def cust_profile():
-    
     return render_template("cust_profile.html")
+
 
 
 if __name__ == "__main__":
