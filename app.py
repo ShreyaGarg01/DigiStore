@@ -17,6 +17,12 @@ records = db.register
 db1 = client.get_database('AddedItems')
 addItems = db1.register
 
+db3 = client.get_database('customers')
+records1 = db3.register
+
+db2 = client.get_database('Finance')
+collectPayment = db2.CollectPayment
+
 def foo():
     bar= db1.get_collection('register')
     return bar
@@ -174,14 +180,6 @@ def login1():
             return render_template('login_customer.html', message=message)
     return render_template('login_customer.html', message=message)
 
-@app.route('/logged_in')
-def logged_in():
-    if "email" in session:
-        email = session["email"]
-        return render_template('logged_in.html', email=email)
-    else:
-        return redirect(url_for("shopkeeper_login"))
-
 @app.route("/logout", methods=["POST", "GET"])
 def logout():
     if "email" in session:
@@ -203,7 +201,16 @@ def dash():
 
 @app.route("/profile", methods=["POST", "GET"])
 def profile():
-    return render_template("users-profile.html")
+    if"email" in session:
+        msg=[]
+        em=""
+        for document in records.find():
+            em=document['email']
+
+        for document in records.find():
+            if(document['email']==em): msg.append(document)
+
+    return render_template("users-profile.html", msg=msg)
 
 @app.route("/cart", methods=["POST", "GET"])
 def cart():
@@ -215,8 +222,7 @@ def order():
     return render_template("order.html")
 
 @app.route("/stock", methods=["POST", "GET"])
-def stock(foobar):
-
+def stock():
     if request.method=="POST":
         itemId = request.form.get("itemId")
         name = request.form.get("name")
@@ -227,11 +233,49 @@ def stock(foobar):
 
         user_input = {'itemId': itemId, 'name': name, 'quantity': quantity, 'brand':brand, 'cp':cp, 'sp':sp}
 
-        addItems.insert_one(user_input)
+        if request.form.get('act') == 'add':                        
+            addItems.insert_one(user_input)  
 
+        if request.form.get('act') == 'delete':                        
+            addItems.delete_one(user_input) 
+
+        if request.form.get('act') == 'update':     
+            addItems.update_one({ 'itemId': itemId },
+            {"$set": { 'name': name, 'quantity': quantity, 'brand':brand, 'cp':cp, 'sp':sp} })         
+
+    msg=[]
     
+    for document in addItems.find():
+        msg.append(document)
+
+    return render_template("stock.html",msg=msg)
+
+@app.route("/collect", methods=["POST", "GET"])
+
+def collect():
+    if request.method=="POST":
+        amount = request.form.get("amount")
+        name = request.form.get("name")
+        contact = request.form.get("contact")
+        user_input = {'amount': amount, 'name': name, 'contact': contact}
+
+        if request.form.get('act') == 'add':                        
+            collectPayment.insert_one(user_input)  
+
+        if request.form.get('act') == 'delete':                        
+            collectPayment.delete_one(user_input) 
+
+        if request.form.get('act') == 'update':     
+            collectPayment.update_one({ "name" : name },
+            {"$set": { "amount" : amount, "contact" : contact } })         
+
+    msg=[]
     
-    return render_template("stock.html", foobar=foo())
+    for document in collectPayment.find():
+        print(document)
+        msg.append(document)
+
+    return render_template("collect.html",msg=msg)
 
 # sales_prediction = define_model()
 
@@ -245,27 +289,6 @@ def sales():
         ans = input_processing([item, date])
         print(ans)
         return render_template("sales.html", prediction = ans)
-
-    return render_template("sales.html")
-
-
-@app.route("/collect", methods=["POST", "GET"])
-def collect():
-    
-    return render_template("collect.html")
-
-
-
-@app.route("/pay", methods=["POST", "GET"])
-def pay():
-    
-    return render_template("pay.html")
-
-@app.route("/cust_profile", methods=["POST", "GET"])
-def cust_profile():
-    
-    return render_template("cust_profile.html")
-
 
 if __name__ == "__main__":
   app.run(debug=True, host='0.0.0.0', port=5000)
