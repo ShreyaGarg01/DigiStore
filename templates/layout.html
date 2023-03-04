@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
-
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -45,13 +43,37 @@
   <style>
 .dropbtn {
   background-color: white;
-  color: blue;
+  color: #012970;
+  font-family: 'Tilt Neon', cursive;
   border-radius:7px;
   padding: 1px;
-  font-size: 30px;
+  font-size: 18px;
   
   border: none;
 }
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+.dropdown-content a:hover {background-color: #ddd;}
+
+.nav-item2:hover .dropdown-content {display: block;}
+
+.dropdown:hover .dropbtn {background-color: #3e8e41;}
 </style>
 </head>
 
@@ -321,10 +343,18 @@
       </li><!-- End Profile Page Nav -->
 
       
-      <li class="nav-item">
+      <li class="nav-item2">
         <a class="nav-link collapsed" href="dues">
           <i class="bi bi-person"></i>
-          <button class="dropbtn" class ="bi bi-person">Dues</button>
+          <!-- <div class="dropdown"> -->
+          <button class="dropbtn">Dues</button>
+          <div class="dropdown-content">
+            <a href="#">Collect</a>
+            <a href="#">Pay</a>
+            
+          </div>
+        <!-- </div> -->
+            
         </a>
       </li><!-- End Profile Page Nav -->
       
