@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, url_for, redirect, session
 from pymongo import MongoClient
 import bcrypt
 from news_api import get_news
+from sales_prediction_model import input_processing
 #set app as a Flask instance 
 app = Flask(__name__)
 #encryption relies on secret keys so they could be run
@@ -232,9 +233,19 @@ def stock(foobar):
     
     return render_template("stock.html", foobar=foo())
 
+# sales_prediction = define_model()
 
 @app.route("/sales", methods=["POST", "GET"])
 def sales():
+    if request.method=="POST":
+        item = request.form.get("item")
+        date = request.form.get("date")
+        print(item)
+        print(date)
+        ans = input_processing([item, date])
+        print(ans)
+        return render_template("sales.html", prediction = ans)
+
     return render_template("sales.html")
 
 
