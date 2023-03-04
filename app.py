@@ -214,16 +214,8 @@ def dash():
 
 @app.route("/profile", methods=["POST", "GET"])
 def profile():
-    if"email" in session:
-        msg=[]
-        em=""
-        for document in records.find():
-            em=document['email']
+    return render_template("users-profile.html")
 
-        for document in records.find():
-            if(document['email']==em): msg.append(document)
-
-    return render_template("users-profile.html", msg=msg)
 
 @app.route("/cart", methods=["POST", "GET"])
 def cart():
