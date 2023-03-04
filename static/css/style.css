@@ -4,7 +4,7 @@
 * Author: BootstrapMade.com
 * License: https://bootstrapmade.com/license/
 */
-
+@import url('https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap');
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/
@@ -61,6 +61,7 @@ h6 {
 
 .pagetitle h1 {
   font-size: 24px;
+  font-family: 'Tilt Neon', cursive;
   margin-bottom: 0;
   font-weight: 600;
   color: #012970;
