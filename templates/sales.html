@@ -19,6 +19,37 @@
     </div><!-- End Page Title -->
 
     <section class="section dashboard">
+      <div class="card-body">
+        <h5 class="card-title">Predict Sales </h5>
+        <br>
+        <form>
+          <div class="form-group pid">
+            <label for="inputAddress">Product ID</label>
+            <input type="number" class="form-control" id="inputAddress" placeholder="Product ID">
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="inputEmail4">From:</label>
+              <input type="date" class="form-control" id="inputEmail4" placeholder="Predict Sales from">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="inputPassword4">To:</label>
+              <input type="date" class="form-control" id="inputPassword4" placeholder="Predict Sales upto">
+            </div>
+          </div> <br><br> 
+          <button type="submit" class="btn btn-primary submt">Submit</button>                 
+        </form>
+
+</div>
+
+<div class="loader" style="display:none;"></div>
+
+<h3 id="result">
+    {{prediction}}
+    <span> </span>
+</h3>
+
+</div>
       <div class="row">
 
         <!-- Left side columns -->
@@ -365,28 +396,7 @@
           </div>
         </div><!-- End Left side columns -->
 
-        <div class="card-body">
-                  <h5 class="card-title">Predict Sales </h5>
-                  <br>
-                  <form>
-                    <div class="form-group pid">
-                      <label for="inputAddress">Product ID</label>
-                      <input type="number" class="form-control" id="inputAddress" placeholder="Product ID">
-                    </div>
-                    <div class="form-row">
-                      <div class="form-group col-md-6">
-                        <label for="inputEmail4">From:</label>
-                        <input type="date" class="form-control" id="inputEmail4" placeholder="Predict Sales from">
-                      </div>
-                      <div class="form-group col-md-6">
-                        <label for="inputPassword4">To:</label>
-                        <input type="date" class="form-control" id="inputPassword4" placeholder="Predict Sales upto">
-                      </div>
-                    </div> <br><br> 
-                    <button type="submit" class="btn btn-primary submt">Submit</button>                 
-                  </form>
-
-     </div>
+      
     </section>
 
   </main><!-- End #main -->
