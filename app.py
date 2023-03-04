@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, url_for, redirect, session
 from pymongo import MongoClient
 import bcrypt
 from news_api import get_news
+from sales_prediction_model import input_processing
 #set app as a Flask instance 
 app = Flask(__name__)
 #encryption relies on secret keys so they could be run
@@ -26,10 +27,6 @@ def foo():
     bar= db1.get_collection('register')
     return bar
 
-# def tocollect():
-#     bar= db2.get_collection('collect')
-#     return bar
-
 
 @app.route("/", methods=["POST", "GET"])
 def main():
@@ -42,9 +39,7 @@ def index():
     message = ''
     #if method post in index
     if "email" in session:
-        news=get_news()
-        return render_template('dash.html', news=news)
-    
+        return redirect(url_for("logged_in"))
     if request.method == "POST":
         user = request.form.get("fullname")
         email = request.form.get("email")
@@ -79,17 +74,15 @@ def index():
             #find the new created account and its email
             user_data = records.find_one({"email": email})
             new_email = user_data['email']
-            news = get_news()
             #if registered redirect to logged in as the registered user
-            return render_template('dash.html', news=news)
+            return render_template('logged_in.html', email=new_email)
     return render_template('index.html')
 
 @app.route("/shopkeeper_login", methods=["POST", "GET"])
 def login():
     message = 'Please login to your account'
     if "email" in session:
-        news=get_news()
-        return render_template('dash.html', news=news)
+        return redirect(url_for("logged_in"))
 
     if request.method == "POST":
         email = request.form.get("email")
@@ -103,12 +96,10 @@ def login():
             #encode the password and check if it matches
             if bcrypt.checkpw(password.encode('utf-8'), passwordcheck):
                 session["email"] = email_val
-                news=get_news()
-                return render_template('dash.html', news=news)
+                return redirect(url_for('logged_in'))
             else:
                 if "email" in session:
-                    news=get_news()
-                    return render_template('dash.html', news=news)
+                    return redirect(url_for("logged_in"))
                 message = 'Wrong password'
                 return render_template('login_shopkeeper.html', message=message)
         else:
@@ -123,17 +114,19 @@ def index1():
     message = ''
     #if method post in index
     if "email" in session:
-        return render_template('cust_dash.html')
-    
+        return redirect(url_for("logged_in"))
     if request.method == "POST":
         user = request.form.get("fullname")
         email = request.form.get("email")
+       
+        
         username = request.form.get("username")
+        
         password1 = request.form.get("password1")
         password2 = request.form.get("password2")
         #if found in database showcase that it's found 
-        user_found = records1.find_one({"name": user})
-        email_found = records1.find_one({"email": email})
+        user_found = records.find_one({"name": user})
+        email_found = records.find_one({"email": email})
         if user_found:
             message = 'There already is a user by that name'
             return render_template('customer.html', message=message)
@@ -149,38 +142,37 @@ def index1():
             #assing them in a dictionary in key value pairs
             user_input = {'name': user, 'email': email, 'password': hashed, 'type': type,  'username': username, }
             #insert it in the record collection
-            records1.insert_one(user_input)
+            records.insert_one(user_input)
             
             #find the new created account and its email
-            user_data = records1.find_one({"email": email})
+            user_data = records.find_one({"email": email})
             new_email = user_data['email']
             #if registered redirect to logged in as the registered user
-            return render_template('cust_dash.html', email=new_email)
+            return render_template('logged_in.html', email=new_email)
     return render_template('customer.html')
 
 @app.route("/customer_login", methods=["POST", "GET"])
 def login1():
     message = 'Please login to your account'
     if "email" in session:
-        return render_template('cust_dash.html')
+        return redirect(url_for("logged_in"))
 
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
 
         #check if email exists in database
-        email_found = records1.find_one({"email": email})
+        email_found = records.find_one({"email": email})
         if email_found:
             email_val = email_found['email']
             passwordcheck = email_found['password']
             #encode the password and check if it matches
             if bcrypt.checkpw(password.encode('utf-8'), passwordcheck):
                 session["email"] = email_val
-                return render_template('cust_dash.html')
-
+                return redirect(url_for('logged_in'))
             else:
                 if "email" in session:
-                    return render_template('cust_dash.html')
+                    return redirect(url_for("logged_in"))
                 message = 'Wrong password'
                 return render_template('login_customer.html', message=message)
         else:
@@ -194,7 +186,7 @@ def logout():
         session.pop("email", None)
         return render_template("signout.html")
     else:
-        return render_template('index.html')
+        return render_template('main.html')
 
 # render home page
 @ app.route('/')
@@ -220,6 +212,15 @@ def profile():
 
     return render_template("users-profile.html", msg=msg)
 
+@app.route("/cart", methods=["POST", "GET"])
+def cart():
+    return render_template("cart.html")
+
+
+@app.route("/order", methods=["POST", "GET"])
+def order():
+    return render_template("order.html")
+
 @app.route("/stock", methods=["POST", "GET"])
 def stock():
     if request.method=="POST":
@@ -229,6 +230,7 @@ def stock():
         brand = request.form.get("brand")
         cp = request.form.get("cp")
         sp = request.form.get("sp")
+
         user_input = {'itemId': itemId, 'name': name, 'quantity': quantity, 'brand':brand, 'cp':cp, 'sp':sp}
 
         if request.form.get('act') == 'add':                        
@@ -275,11 +277,18 @@ def collect():
 
     return render_template("collect.html",msg=msg)
 
+# sales_prediction = define_model()
 
 @app.route("/sales", methods=["POST", "GET"])
 def sales():
-    return render_template("sales.html")
-
+    if request.method=="POST":
+        item = request.form.get("item")
+        date = request.form.get("date")
+        print(item)
+        print(date)
+        ans = input_processing([item, date])
+        print(ans)
+        return render_template("sales.html", prediction = ans)
 
 if __name__ == "__main__":
   app.run(debug=True, host='0.0.0.0', port=5000)
