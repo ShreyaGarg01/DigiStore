@@ -1,7 +1,7 @@
 
 {% extends 'layout.html' %}
 {% block body %}
-
+<link rel="stylesheet" href="../static/css/sales.css">
 <body>
   
   <main id="main" class="main">
@@ -45,28 +45,31 @@
 <div class="row">
   
   <!-- Sales Card -->
-  <div class="col-xxl-4 col-md-6 center">
-    <center>
-    <div class="card info-card sales-card center">
+ 
 
       
-
-      <div class="card-body center">
-        <h5 class="card-title">Sales <span>| Predicted</span></h5>
-
-        <div class="d-flex align-items-center">
-          <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-            <i class="bi bi-cart"></i>
-          </div>
-          <div class="ps-3">
-            <h6>{{prediction}}</h6>
-            <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>
-
+      <div class="result">
+        <div class="col-xxl-4 col-md-6 center">
+    
+          <div class="card info-card sales-card center">
+        <div class="card-body center">
+          <h5 class="card-title">Sales <span>| Predicted</span></h5>
+  
+          <div class="d-flex align-items-center">
+            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+              <i class="bi bi-cart"></i>
+            </div>
+            <div class="ps-3">
+              <h6>{{prediction}}</h6>
+              <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>
+  
+            </div>
           </div>
         </div>
       </div>
+      
 
-    </div></center>
+    </div>
   </div><!-- End Sales Card --></div>
 
       <div class="row">
