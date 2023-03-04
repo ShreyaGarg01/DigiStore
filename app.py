@@ -179,19 +179,19 @@ def login1():
             if bcrypt.checkpw(password.encode('utf-8'), passwordcheck):
                 session["email"] = email_val
                 news = get_news()
-                return render_template('dash.html',news=news)
+                return render_template('cust_profile.html',news=news)
 
             else:
                 if "email" in session:
                     news = get_news()
-                    return render_template('dash.html',news=news)
+                    return render_template('cust_profile.html',news=news)
 
                 message = 'Wrong password'
-                return render_template('login_customer.html', message=message)
+                return render_template('cust_profile.html', message=message)
         else:
             message = 'Email not found'
-            return render_template('login_customer.html', message=message)
-    return render_template('login_customer.html', message=message)
+            return render_template('cust_profile.html', message=message)
+    return render_template('cust_profile.html', message=message)
 
 @app.route("/logout", methods=["POST", "GET"])
 def logout():

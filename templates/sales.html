@@ -24,12 +24,12 @@
         <br><center>
         <form method="POST" action="" class="card p-5 w-75 bg-white text-left">
           <div class="form-group">
-            <label for="item">Product ID</label>
+            <label for="item" >Product ID</label>
             <input type="number" name="item" class="form-control" id="item" placeholder="Product ID">
           </div>
           <!-- <div class="form-row"> -->
             <div class="form-group">
-              <label for="date">Date</label>
+              <label for="date">Predict your sales (Date)</label>
               <input type="text" name="date" class="form-control" id="date" placeholder="YYYY-MM-DD">
             </div>
             <!-- <div class="form-group col-md-6">
@@ -45,23 +45,24 @@
 <div class="row" align="center">
   
   <!-- Sales Card -->
-  <div class="col-xxl-4 col-md-4 center" align="center">
-    <center>
-    <div class="card info-card sales-card center" align="center">
+ 
 
       
-
-      <div class="card-body center" align="center">
-        <h5 class="card-title">Sales <span>| Predicted</span></h5>
-
-        <div class="d-flex align-items-center" align="center">
-          <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" align="center">
-            <i class="bi bi-cart"></i>
-          </div>
-          <div class="ps-3" align="center">
-            <h6>{{prediction}}</h6>
-            <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>
-
+      <div class="result">
+        <div class="col-xxl-4 col-md-4 center">
+    
+          <div class="card info-card sales-card center">
+        <div class="card-body center">
+          <h5 class="card-title">Sales <span>| Predicted</span></h5>
+  
+          <div class="d-flex align-items-center">
+            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+              <i class="bi bi-cart"></i>
+            </div>
+            <div class="ps-3">
+              <h6>{{prediction}}</h6>
+  
+            </div>
           </div>
         </div>
       </div>
