@@ -20,7 +20,6 @@ def foo():
     bar= db1.get_collection('register')
     return bar
 
-    
 
 @app.route("/", methods=["POST", "GET"])
 def main():
