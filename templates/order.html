@@ -1,15 +1,17 @@
 {% extends 'layout_customer.html' %}
-
 {% block body %}
+<link rel="stylesheet" href="../static/css/order.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="../static/css/order.css">
 
-<link rel="stylesheet" href="../static/css/order.css">
+
 <body>
-
-    <section class="articles">
+  
+  <main id="main" class="main">
+    <div class="pagetitle">
+            <h1>My Orders</h1>            
+    </div><!-- End Page Title -->
+    
+    <section class="col-lg-6">
         <article>
           <div class="article-wrapper">
             <figure>
@@ -71,9 +73,7 @@
         </article>
       </section>
 
-
-      
-    <section class="articles">
+    <section class="col-lg-6">
         <article>
           <div class="article-wrapper">
             <figure>
@@ -134,7 +134,10 @@
           </div>
         </article>
       </section>
-
-
+    
+  </main>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </body>
+</html>
  {% endblock %}
