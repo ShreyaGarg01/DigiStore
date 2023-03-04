@@ -4,7 +4,7 @@
 * Author: BootstrapMade.com
 * License: https://bootstrapmade.com/license/
 */
-
+@import url('https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap');
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/
@@ -34,7 +34,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Nunito", sans-serif;
+  font-family: 'Tilt Neon', cursive;
 }
 
 /*--------------------------------------------------------------
@@ -61,6 +61,7 @@ h6 {
 
 .pagetitle h1 {
   font-size: 24px;
+  font-family: 'Tilt Neon', cursive;
   margin-bottom: 0;
   font-weight: 600;
   color: #012970;
@@ -152,6 +153,11 @@ h6 {
 .dropdown-menu .dropdown-item:hover {
   background-color: #f6f9ff;
 }
+
+.headr{
+  font-family: 'Tilt Neon', cursive;
+}
+
 
 @media (min-width: 768px) {
   .dropdown-menu-arrow::before {

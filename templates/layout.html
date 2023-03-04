@@ -49,9 +49,9 @@
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index.html" class="logo d-flex align-items-center">
+      <a href="dashboard" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="">
-        <span class="d-none d-lg-block">NiceAdmin</span>
+        <span class="d-none d-lg-block headr">NiceAdmin</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
@@ -79,6 +79,7 @@
             <span class="badge bg-primary badge-number">4</span>
           </a><!-- End Notification Icon -->
 
+
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
             <li class="dropdown-header">
               You have 4 new notifications
@@ -93,7 +94,7 @@
               <div>
                 <h4>Lorem Ipsum</h4>
                 <p>Quae dolorem earum veritatis oditseno</p>
-                <p>30 min. ago</p>
+                <p>30 min ago</p>
               </div>
             </li>
 
@@ -106,7 +107,7 @@
               <div>
                 <h4>Atque rerum nesciunt</h4>
                 <p>Quae dolorem earum veritatis oditseno</p>
-                <p>1 hr. ago</p>
+                <p>1 hr ago</p>
               </div>
             </li>
 
@@ -119,7 +120,7 @@
               <div>
                 <h4>Sit rerum fuga</h4>
                 <p>Quae dolorem earum veritatis oditseno</p>
-                <p>2 hrs. ago</p>
+                <p>2 hrs ago</p>
               </div>
             </li>
 
@@ -132,7 +133,7 @@
               <div>
                 <h4>Dicta reprehenderit</h4>
                 <p>Quae dolorem earum veritatis oditseno</p>
-                <p>4 hrs. ago</p>
+                <p>4 hrs ago</p>
               </div>
             </li>
 
@@ -169,7 +170,7 @@
                 <div>
                   <h4>Maria Hudson</h4>
                   <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                  <p>4 hrs. ago</p>
+                  <p>4 hrs ago</p>
                 </div>
               </a>
             </li>
@@ -183,7 +184,7 @@
                 <div>
                   <h4>Anna Nelson</h4>
                   <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                  <p>6 hrs. ago</p>
+                  <p>6 hrs ago</p>
                 </div>
               </a>
             </li>
@@ -197,7 +198,7 @@
                 <div>
                   <h4>David Muldon</h4>
                   <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                  <p>8 hrs. ago</p>
+                  <p>8 hrs ago</p>
                 </div>
               </a>
             </li>
@@ -280,7 +281,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link " href="index.html">
+        <a class="nav-link " href="/dashboard">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
@@ -348,6 +349,7 @@
   <script src="{{ url_for('static', filename='vendor/quill/quill.min.js')}}"></script>
   <script src="{{ url_for('static', filename='vendor/echarts/echarts.min.js')}}"></script>
   <script src="{{ url_for('static', filename='assets/vendor/chart.js/chart.umd.js')}}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <!-- Template Main JS File -->
   <script src="{{ url_for('static', filename='js/main.js')}}"></script>
