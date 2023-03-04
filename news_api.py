@@ -8,6 +8,7 @@ def get_news():
     res = requests.get(top_headlines_api).json()
     response = res['articles'][0:6]
     return response
+
 # print(res['articles'][0])
 # 'title'
 # 'description'

@@ -16,6 +16,9 @@ records = db.register
 db1 = client.get_database('AddedItems')
 addItems = db1.register
 
+db3 = client.get_database('customers')
+records1 = db3.register
+
 def foo():
     bar= db1.get_collection('register')
     return bar
@@ -32,7 +35,9 @@ def index():
     message = ''
     #if method post in index
     if "email" in session:
-        return redirect(url_for("logged_in"))
+        news=get_news()
+        return render_template('dash.html', news=news)
+    
     if request.method == "POST":
         user = request.form.get("fullname")
         email = request.form.get("email")
@@ -67,15 +72,17 @@ def index():
             #find the new created account and its email
             user_data = records.find_one({"email": email})
             new_email = user_data['email']
+            news = get_news()
             #if registered redirect to logged in as the registered user
-            return render_template('logged_in.html', email=new_email)
+            return render_template('dash.html', news=news)
     return render_template('index.html')
 
 @app.route("/shopkeeper_login", methods=["POST", "GET"])
 def login():
     message = 'Please login to your account'
     if "email" in session:
-        return redirect(url_for("logged_in"))
+        news=get_news()
+        return render_template('dash.html', news=news)
 
     if request.method == "POST":
         email = request.form.get("email")
@@ -89,10 +96,12 @@ def login():
             #encode the password and check if it matches
             if bcrypt.checkpw(password.encode('utf-8'), passwordcheck):
                 session["email"] = email_val
-                return redirect(url_for('logged_in'))
+                news=get_news()
+                return render_template('dash.html', news=news)
             else:
                 if "email" in session:
-                    return redirect(url_for("logged_in"))
+                    news=get_news()
+                    return render_template('dash.html', news=news)
                 message = 'Wrong password'
                 return render_template('login_shopkeeper.html', message=message)
         else:
@@ -107,19 +116,17 @@ def index1():
     message = ''
     #if method post in index
     if "email" in session:
-        return redirect(url_for("logged_in"))
+        return render_template('cust_dash.html')
+    
     if request.method == "POST":
         user = request.form.get("fullname")
         email = request.form.get("email")
-       
-        
         username = request.form.get("username")
-        
         password1 = request.form.get("password1")
         password2 = request.form.get("password2")
         #if found in database showcase that it's found 
-        user_found = records.find_one({"name": user})
-        email_found = records.find_one({"email": email})
+        user_found = records1.find_one({"name": user})
+        email_found = records1.find_one({"email": email})
         if user_found:
             message = 'There already is a user by that name'
             return render_template('customer.html', message=message)
@@ -135,37 +142,38 @@ def index1():
             #assing them in a dictionary in key value pairs
             user_input = {'name': user, 'email': email, 'password': hashed, 'type': type,  'username': username, }
             #insert it in the record collection
-            records.insert_one(user_input)
+            records1.insert_one(user_input)
             
             #find the new created account and its email
-            user_data = records.find_one({"email": email})
+            user_data = records1.find_one({"email": email})
             new_email = user_data['email']
             #if registered redirect to logged in as the registered user
-            return render_template('logged_in.html', email=new_email)
+            return render_template('cust_dash.html', email=new_email)
     return render_template('customer.html')
 
 @app.route("/customer_login", methods=["POST", "GET"])
 def login1():
     message = 'Please login to your account'
     if "email" in session:
-        return redirect(url_for("logged_in"))
+        return render_template('cust_dash.html')
 
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
 
         #check if email exists in database
-        email_found = records.find_one({"email": email})
+        email_found = records1.find_one({"email": email})
         if email_found:
             email_val = email_found['email']
             passwordcheck = email_found['password']
             #encode the password and check if it matches
             if bcrypt.checkpw(password.encode('utf-8'), passwordcheck):
                 session["email"] = email_val
-                return redirect(url_for('logged_in'))
+                return render_template('cust_dash.html')
+
             else:
                 if "email" in session:
-                    return redirect(url_for("logged_in"))
+                    return render_template('cust_dash.html')
                 message = 'Wrong password'
                 return render_template('login_customer.html', message=message)
         else:
@@ -173,13 +181,13 @@ def login1():
             return render_template('login_customer.html', message=message)
     return render_template('login_customer.html', message=message)
 
-@app.route('/logged_in')
-def logged_in():
-    if "email" in session:
-        email = session["email"]
-        return render_template('logged_in.html', email=email)
-    else:
-        return redirect(url_for("shopkeeper_login"))
+# @app.route('/logged_in')
+# def logged_in():
+#     if "email" in session:
+#         email = session["email"]
+#         return render_template('logged_in.html', email=email)
+#     else:
+#         return redirect(url_for("shopkeeper_login"))
 
 @app.route("/logout", methods=["POST", "GET"])
 def logout():
@@ -205,7 +213,7 @@ def profile():
     return render_template("users-profile.html")
 
 @app.route("/stock", methods=["POST", "GET"])
-def stock(foobar):
+def stock():
 
     if request.method=="POST":
         itemId = request.form.get("itemId")
@@ -218,10 +226,8 @@ def stock(foobar):
         user_input = {'itemId': itemId, 'name': name, 'quantity': quantity, 'brand':brand, 'cp':cp, 'sp':sp}
 
         addItems.insert_one(user_input)
-
     
-    
-    return render_template("stock.html", foobar=foo())
+    return render_template("stock.html")
 
 
 @app.route("/sales", methods=["POST", "GET"])
