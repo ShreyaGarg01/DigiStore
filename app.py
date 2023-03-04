@@ -8,13 +8,17 @@ app = Flask(__name__)
 app.secret_key = "testing"
 
 # connect to your Mongo DB database
-def MongoDB():
-    client = MongoClient("mongodb+srv://b21124:f8Yuo2hEHui6YC3i@cluster0.2kag3bh.mongodb.net/?retryWrites=true&w=majority")
-    db = client.get_database('total_records')
-    records = db.register
-    return records
-records = MongoDB()
 
+client = MongoClient("mongodb+srv://b21124:f8Yuo2hEHui6YC3i@cluster0.2kag3bh.mongodb.net/?retryWrites=true&w=majority")
+db = client.get_database('total_records')
+records = db.register
+
+db1 = client.get_database('AddedItems')
+addItems = db1.register
+
+def foo():
+    bar= db1.get_collection('register')
+    return bar
 
 
 @app.route("/", methods=["POST", "GET"])
@@ -42,6 +46,7 @@ def index():
         #if found in database showcase that it's found 
         user_found = records.find_one({"name": user})
         email_found = records.find_one({"email": email})
+
         if user_found:
             message = 'There already is a user by that name'
             return render_template('index.html', message=message)
@@ -200,8 +205,23 @@ def profile():
     return render_template("users-profile.html")
 
 @app.route("/stock", methods=["POST", "GET"])
-def stock():
-    return render_template("stock.html")
+def stock(foobar):
+
+    if request.method=="POST":
+        itemId = request.form.get("itemId")
+        name = request.form.get("name")
+        quantity = request.form.get("quantity")
+        brand = request.form.get("brand")
+        cp = request.form.get("cp")
+        sp = request.form.get("sp")
+
+        user_input = {'itemId': itemId, 'name': name, 'quantity': quantity, 'brand':brand, 'cp':cp, 'sp':sp}
+
+        addItems.insert_one(user_input)
+
+    
+    
+    return render_template("stock.html", foobar=foo())
 
 
 @app.route("/sales", methods=["POST", "GET"])
@@ -213,6 +233,8 @@ def sales():
 def dues():
     
     return render_template("dues.html")
+
+
 
 
 if __name__ == "__main__":

@@ -34,7 +34,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Nunito", sans-serif;
+  font-family: 'Tilt Neon', cursive;
 }
 
 /*--------------------------------------------------------------
@@ -153,6 +153,11 @@ h6 {
 .dropdown-menu .dropdown-item:hover {
   background-color: #f6f9ff;
 }
+
+.headr{
+  font-family: 'Tilt Neon', cursive;
+}
+
 
 @media (min-width: 768px) {
   .dropdown-menu-arrow::before {
