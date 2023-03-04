@@ -243,8 +243,8 @@ h6 {
   margin-bottom: 30px;
   border: none;
   border-radius: 5px;
-  flex-direction: row;
-  box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
+ 
+  box-shadow: 0px 0 30px rgba(1, 24, 66, 0.1);
 }
 
 .card-horizontal {
@@ -258,13 +258,13 @@ h6 {
 }
 .img-square-wrapper{
   margin-left: 35rem;
-  margin-top: 10rem;
+  margin-top: 2rem;
 
 }
 
-.card-body{
+.card-body1{
   margin-left: 20rem;
-  margin-top: 10rem;
+  margin-top: 2rem;
  
 }
 
