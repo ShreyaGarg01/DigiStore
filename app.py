@@ -204,6 +204,15 @@ def dash():
 def profile():
     return render_template("users-profile.html")
 
+@app.route("/cart", methods=["POST", "GET"])
+def cart():
+    return render_template("cart.html")
+
+
+@app.route("/order", methods=["POST", "GET"])
+def order():
+    return render_template("order.html")
+
 @app.route("/stock", methods=["POST", "GET"])
 def stock(foobar):
 
