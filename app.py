@@ -214,8 +214,9 @@ def dash():
 
 @app.route("/profile", methods=["POST", "GET"])
 def profile():
+    msg=[]
     if"email" in session:
-        msg=[]
+        
         em=""
         for document in records.find():
             em=document['email']
