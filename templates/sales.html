@@ -5,7 +5,9 @@
 <body>
   
   <main id="main" class="main">
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <div class="pagetitle">
       <h1>Sales</h1>
       <nav>
@@ -363,9 +365,28 @@
           </div>
         </div><!-- End Left side columns -->
 
-        
+        <div class="card-body">
+                  <h5 class="card-title">Predict Sales </h5>
+                  <br>
+                  <form>
+                    <div class="form-group pid">
+                      <label for="inputAddress">Product ID</label>
+                      <input type="number" class="form-control" id="inputAddress" placeholder="Product ID">
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="inputEmail4">From:</label>
+                        <input type="date" class="form-control" id="inputEmail4" placeholder="Predict Sales from">
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputPassword4">To:</label>
+                        <input type="date" class="form-control" id="inputPassword4" placeholder="Predict Sales upto">
+                      </div>
+                    </div> <br><br> 
+                    <button type="submit" class="btn btn-primary submt">Submit</button>                 
+                  </form>
 
-     
+     </div>
     </section>
 
   </main><!-- End #main -->
