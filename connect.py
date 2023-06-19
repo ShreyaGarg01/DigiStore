@@ -3,7 +3,7 @@
 # the changes to commit here i will create a new file for connection with MOnoDB Database 
 from pymongo import MongoClient
 
-
+# established connection with mongo_db 
 client = MongoClient("mongodb+srv://b21124:f8Yuo2hEHui6YC3i@cluster0.2kag3bh.mongodb.net/?retryWrites=true&w=majority")
 db = client.get_database('total_records')
 records = db.register

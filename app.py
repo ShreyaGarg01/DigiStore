@@ -8,8 +8,8 @@ app = Flask(__name__)
 #encryption relies on secret keys so they could be run
 app.secret_key = "testing"
 
-# connect to your Mongo DB database
 from connect import * # established database connection in connect.py
+# connect to your Mongo DB database
 
 def foo():
     bar= db1.get_collection('register')
@@ -310,6 +310,7 @@ def sales():
 @app.route("/cust_profile", methods=["POST", "GET"])
 def cust_profile():
     return render_template("cust_profile.html")
+
 
 
 
