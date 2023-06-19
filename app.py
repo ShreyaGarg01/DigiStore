@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, url_for, redirect, session
-from pymongo import MongoClient
+# from pymongo import MongoClient
 import bcrypt
 from news_api import get_news
 from sales_prediction_model import input_processing
@@ -9,20 +9,7 @@ app = Flask(__name__)
 app.secret_key = "testing"
 
 # connect to your Mongo DB database
-
-client = MongoClient("mongodb+srv://b21124:f8Yuo2hEHui6YC3i@cluster0.2kag3bh.mongodb.net/?retryWrites=true&w=majority")
-db = client.get_database('total_records')
-records = db.register
-
-db1 = client.get_database('AddedItems')
-addItems = db1.register
-
-db3 = client.get_database('customers')
-records1 = db3.register
-
-db2 = client.get_database('Finance')
-collectPayment = db2.CollectPayment
-Pay = db2.pay
+from connect import * # established database connection in connect.py
 
 def foo():
     bar= db1.get_collection('register')
