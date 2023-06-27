@@ -1,5 +1,3 @@
-# Frosthack23
-
-Video link: https://youtu.be/4CeMTPnQApI
+# DigiStore
 
 Website link: https://digi-store.onrender.com/
