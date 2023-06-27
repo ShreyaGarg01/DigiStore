@@ -1,4 +1,4 @@
-# Frosthack23
+# DigiStore
 
 Video link: https://youtu.be/4CeMTPnQApI
 
