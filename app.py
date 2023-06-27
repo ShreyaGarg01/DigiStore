@@ -27,6 +27,7 @@ def index():
     message = ''
     #if method post in index
     if "email" in session:
+        # news = get_news()
         news = get_news()
         return render_template('dash.html',news=news)
     
@@ -65,6 +66,7 @@ def index():
             user_data = records.find_one({"email": email})
             new_email = user_data['email']
             #if registered redirect to logged in as the registered user
+            # news = get_news() 
             news = get_news()
             return render_template('dash.html',news=news)
     return render_template('index.html')
